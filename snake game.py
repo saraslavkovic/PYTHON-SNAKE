@@ -34,6 +34,13 @@ food.penup()
 food.goto(0, 100)
 
 segments = []
+
+segments = []
+pen = turtle.Turtle()
+pen.shape("square")
+pen.color
+
+
 # funcions
 
 
@@ -82,13 +89,45 @@ wn.onkeypress(go_right, "d")
 # main game loop
 while True:
     wn.update()
-# chech for a collision with the food
+
+# chek for a collision with the border
+    if head.xcor() > 290 or head.xcor() < -290 or head.ycor() > 290 or head.ycor() < -290:
+        time.sleep(1)
+        head.goto(0, 0)
+        head.direction = "stop"
+        # hide segments
+        for segment in segments:
+            segment.goto(1000, 1000)
+
+        # clear the segment list
+        segments.clear()
+
+        # chech for a collision with the food\
+
     if head.distance(food) < 20:
         # move the food to a random spot
         x = random.randint(-290, 290)
         y = random.randint(-290, 290)
         food.goto(x, y)
+        # add a segment
+        new_segment = turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.shape("square")
+        new_segment.color("grey")
+        new_segment.penup()
+        segments.append(new_segment)
 
+    # move the end segments first in reverse order
+    for index in range(len(segments)-1, 0, -1):
+        X = segments[index-1].xcor()
+        z = segments[index-1].ycor()
+        segments[index].goto(x, y)
+
+    # move segments 0 to where the head is
+    if len(segments) > 0:
+        x = head.xcor()
+        y = head.ycor()
+        segments[0].goto(x, y)
     move()
 
     time.sleep(delay)
